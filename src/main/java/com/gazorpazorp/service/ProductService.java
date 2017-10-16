@@ -42,6 +42,7 @@ public class ProductService {
 		replaceSadCharacters(product.getSecondaryCategory());
 		replaceSadCharacters(product.getProducerName());
 		replaceSadCharacters(product.getServingSuggestion());
+		replaceSadCharacters(product.getOrigin());
 	}	
 	private void replaceSadCharacters(String str) {
 		if (str == null)
@@ -51,12 +52,24 @@ public class ProductService {
 		str.replace("u00e9", "é");
 		str.replace("u000d", "");
 		str.replace("u00bd", "½");
+		str.replace("u00e2", "á");
 		str.replace("u00e2", "â");
 		str.replace("u00e7", "ç");
 		str.replace("u00e8", "è");
 		str.replace("u00fb", "û");
 		str.replace("u00f1", "ñ");
 		str.replace("u00f4", "ô");
+		str.replace("\\u005c", ""); 
+		str.replace("\\u00e9", "é");
+		str.replace("\\u000d", "");
+		str.replace("\\u00bd", "½");
+		str.replace("\\u00e2", "á");
+		str.replace("\\u00e2", "â");
+		str.replace("\\u00e7", "ç");
+		str.replace("\\u00e8", "è");
+		str.replace("\\u00fb", "û");
+		str.replace("\\u00f1", "ñ");
+		str.replace("\\u00f4", "ô");
 	}
 	
 	public List<Product> getProductsById(String productIds) {
