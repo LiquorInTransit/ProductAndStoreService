@@ -83,13 +83,15 @@ public class ProductRepositoryCreationService extends Thread {
 			logger.info("Updating to dataset" + dataset.getId());
 			addProducts(dataset);
 			removeProducts(dataset);
+			addStores(latestDataset);
+			removeStores(latestDataset);
 		}
-		//Update from the latest dataset
-		logger.info("Updating to latest dataset");
-		addProducts(latestDataset);
-		removeProducts(latestDataset);
-		addStores(latestDataset);
-		removeStores(latestDataset);
+//		//Update from the latest dataset
+//		logger.info("Updating to latest dataset");
+//		addProducts(latestDataset);
+//		removeProducts(latestDataset);
+//		addStores(latestDataset);
+//		removeStores(latestDataset);
 		updateMgr.setLatestUpdate(latestDataset.getId());
 		logger.info("Finished initial update. Latest ID updated is " + updateMgr.getLatestUpdate());
 	}
@@ -101,6 +103,7 @@ public class ProductRepositoryCreationService extends Thread {
 		productRepo.saveAll(products);	
 	}
 	private void removeProducts(Dataset dataset) {
+		System.out.println(dataset.getRemovedProductIds());
 		dataset.getRemovedProductIds()
 			.forEach(id -> {
 				try {

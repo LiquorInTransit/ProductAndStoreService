@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.commons.util.InetUtils;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.eureka.EurekaInstanceConfigBean;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +28,7 @@ import com.netflix.appinfo.AmazonInfo;
 @SpringBootApplication(scanBasePackages="com.gazorpazorp")
 @EnableJpaRepositories("com.gazorpazorp.repository")
 @EntityScan(basePackages="com.gazorpazorp")
-//@EnableEurekaClient
+@EnableEurekaClient
 @EnableFeignClients("com.gazorpazorp.client")
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -47,9 +48,14 @@ public class ProductAndStoreServiceApplication {
 		PRCService.start();
 	}
 	
-	@PostConstruct
 	@Scheduled(cron = "0 0 2 * * *")
 	public void updateRepo() {
+		try {
+			PRUService.wait(new Long(5000));
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		PRUService.start();
 	}
 	
