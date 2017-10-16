@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: product-service
+  cloud:
+    config:
+      uri: http://ec2-18-221-58-46.us-east-2.compute.amazonaws.com:8080
+      
+lcbo-client:
+  ribbon:
+    NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
+    listOfServers: https://www.lcboapi.com
+    connectionTimeout: 5000
+    readTimeout: 5000
+    isSecure: true
+    
+---
+
+spring:
+  profiles: dev
+  cloud:
+    config:
+      uri: http://localhost:8888
+
