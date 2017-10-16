@@ -15,7 +15,9 @@ import org.springframework.web.client.RestTemplate;
 import com.gazorpazorp.model.Dataset;
 import com.gazorpazorp.model.DatasetResult;
 import com.gazorpazorp.model.Product;
+import com.gazorpazorp.model.Store;
 import com.gazorpazorp.repository.ProductRestRepository;
+import com.gazorpazorp.repository.StoreRepository;
 
 @Service
 public class ProductRepositoryCreationService extends Thread {
@@ -23,9 +25,13 @@ public class ProductRepositoryCreationService extends Thread {
 
 	@Autowired
 	ProductRestRepository productRepo;
+	@Autowired
+	StoreRepository storeRepo;
 
 	@Autowired
 	ProductService productService;
+	@Autowired
+	StoreService storeService;
 
 	String key = "MDo1NDQwN2RjYy0wMDhkLTExZTctYWEwNy0yMzI4NjgxOTRjOWU6V2hSaDdoOXBVbjFjTU80cUtBZlpxRkI4UlJDVWcxRWlBUWZZ";
 	String initalDatasetId = "2358";
@@ -49,6 +55,7 @@ public class ProductRepositoryCreationService extends Thread {
 		logger.info("Starting the initial update to latest");
 		updateFromDataset(initialSet);
 
+//		logger.info("Creating Repository");
 //		Dataset initialSet = datasetTemplate
 //				.exchange("https://www.lcboapi.com/datasets/latest", HttpMethod.GET, entity, DatasetResult.class)
 //				.getBody().getResult();
@@ -81,10 +88,13 @@ public class ProductRepositoryCreationService extends Thread {
 		logger.info("Updating to latest dataset");
 		addProducts(latestDataset);
 		removeProducts(latestDataset);
+		addStores(latestDataset);
+		removeStores(latestDataset);
 		updateMgr.setLatestUpdate(latestDataset.getId());
 		logger.info("Finished initial update. Latest ID updated is " + updateMgr.getLatestUpdate());
 	}
 	
+	//Manage products
 	private void addProducts(Dataset dataset) {
 		List<Product> products = productService.getLCBOProductsById(dataset.getAddedProductIds().stream().map(Object::toString).collect(Collectors.joining(",")));
 		products.forEach(p -> productService.replaceSadCharactersOnProduct(p));
@@ -100,21 +110,50 @@ public class ProductRepositoryCreationService extends Thread {
 				}
 			});
 	}
+	//Manage stores
+	private void addStores(Dataset dataset) {
+		List<Store> stores = storeService.getStoresById(dataset.getAddedStoreIds().stream().map(Object::toString).collect(Collectors.joining(",")));
+		stores.forEach(s -> storeService.replaceSadCharactersOnStore(s));
+		storeRepo.saveAll(stores);
+	}
+	private void removeStores(Dataset dataset) {
+		dataset.getRemovedStoreIds()
+			.forEach(id -> {
+				try {
+					storeRepo.deleteById(id);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			});
+	}
+	
 
-//	private void parseAndCreateRepoFromDataset(Dataset dataset) {
-//
-//		for (long x = 0; x < dataset.getTotalProducts(); x++) {
-//			Long id = dataset.getProductIds().get((int) x);
-//			try {
-//					productRepo.save(productService.getProductById(id));
-//			} catch (Exception e) {
-//				//e.printStackTrace();
-//				logger.error("Failed to persist product with id: " + id + ". " + e.getMessage());
-//				e.printStackTrace();
-//			}
-//			if (x % 100 == 0)
-//				productRepo.flush();
-//		}
-//		logger.info("IMPORT COMPLETE");
-//	}
+	private void parseAndCreateRepoFromDataset(Dataset dataset) {
+
+		for (long x = 0; x < dataset.getTotalProducts(); x++) {
+			Long productId = dataset.getProductIds().get((int) x);
+			try {
+					productRepo.save(productService.getProductById(productId));
+			} catch (Exception e) {
+				//e.printStackTrace();
+				logger.error("Failed to persist product with id: " + productId + ". " + e.getMessage());
+				e.printStackTrace();
+			}
+			if (x % 100 == 0) 
+				productRepo.flush();
+		}
+		for (long x = 0; x < dataset.getTotalStores(); x++) {
+			Long storeId = dataset.getStoreIds().get((int) x);
+			try {
+				storeRepo.save(storeService.getStoreById(storeId));
+			} catch (Exception e) {
+				//e.printStackTrace();
+				logger.error("Failed to persist store with id: " + storeId + ". " + e.getMessage());
+				e.printStackTrace();
+			}
+			if (x % 100 == 0) 
+				storeRepo.flush();			
+		}
+		logger.info("IMPORT COMPLETE");
+	}
 }

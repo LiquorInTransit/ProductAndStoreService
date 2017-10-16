@@ -42,8 +42,7 @@ public class ProductService {
 		replaceSadCharacters(product.getSecondaryCategory());
 		replaceSadCharacters(product.getProducerName());
 		replaceSadCharacters(product.getServingSuggestion());
-	}
-	
+	}	
 	private void replaceSadCharacters(String str) {
 		if (str == null)
 			return;

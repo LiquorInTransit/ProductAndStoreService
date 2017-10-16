@@ -1,14 +1,26 @@
 package com.gazorpazorp.model;
 
+import javax.persistence.Column;
 import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+
+import org.springframework.format.annotation.NumberFormat;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@Entity
 public class Store {
 
+	@Id
 	private Long id;
+	@Column(columnDefinition="DECIMAL(6,4)")
+	@NumberFormat(pattern="##.####")
 	private double latitude;
+	@Column(columnDefinition="DECIMAL(7,4)")
+	@NumberFormat(pattern="###.####")
 	private double longitude;
 	@JsonAlias("address_line_1")
 	private String address;
@@ -17,6 +29,7 @@ public class Store {
 	private String postalCode;
 	
 	@Embedded
+	@Transient
 	private Location location;
 	
 	
@@ -45,7 +58,8 @@ public class Store {
 		location.setPostalCode(this.postalCode);
 	}
 	
-	
+	@Column(columnDefinition="DECIMAL(15,13)")
+	@NumberFormat(pattern="##.###########")
 	@JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
 	public double getLatitude() {
 		return latitude;
@@ -54,6 +68,8 @@ public class Store {
 		this.latitude = latitude;
 	}
 
+	@Column(columnDefinition="DECIMAL(16,13)")
+	@NumberFormat(pattern="##.###########")
 	@JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
 	public double getLongitude() {
 		return longitude;
@@ -84,7 +100,11 @@ public class Store {
 	}
 	public void setPostalCode(String postalCode) {
 		this.postalCode = postalCode;
+	}
+
+	@Override
+	public String toString() {
+		return "Store [id=" + id + ", latitude=" + latitude + ", longitude=" + longitude + ", address=" + address
+				+ ", city=" + city + ", postalCode=" + postalCode + ", location=" + location + "]";
 	}	
-	
-	
 }
