@@ -3,11 +3,12 @@ package com.gazorpazorp.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
+@Table(name="PRODUCT")
 public class Product {
 	///////////////////////////////////////
 	//LCBO-API Stored Properties
