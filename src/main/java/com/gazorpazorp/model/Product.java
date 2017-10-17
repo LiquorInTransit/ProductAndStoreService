@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@Table(name="PRODUCT", schema="PRODUCT")
+@Table(name="product", schema="product")
 public class Product {
 	///////////////////////////////////////
 	//LCBO-API Stored Properties

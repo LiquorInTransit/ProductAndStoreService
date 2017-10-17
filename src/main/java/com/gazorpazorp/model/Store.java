@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@Table(name="STORE")
+@Table(name="store")
 public class Store {
 
 	@Id
