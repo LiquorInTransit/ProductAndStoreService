@@ -2,7 +2,6 @@ package com.gazorpazorp.ProductAndStoreService;
 
 import javax.annotation.PostConstruct;
 
-import org.hsqldb.util.DatabaseManagerSwing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -60,11 +59,11 @@ public class ProductAndStoreServiceApplication {
 		PRUService.start();
 	}
 	
-	@PostConstruct
-	public void getDbManager(){
-	   DatabaseManagerSwing.main(
-		new String[] { "--url", "jdbc:hsqldb:mem:test://localhost/test?characterEncoding=UTF-8", "--user", "SA", "--password", ""});
-	}
+//	@PostConstruct
+//	public void getDbManager(){
+//	   DatabaseManagerSwing.main(
+//		new String[] { "--url", "jdbc:hsqldb:mem:test://localhost/test?characterEncoding=UTF-8", "--user", "SA", "--password", ""});
+//	}
 	
 	
 	@Configuration
