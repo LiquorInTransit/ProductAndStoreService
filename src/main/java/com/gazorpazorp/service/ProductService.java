@@ -1,5 +1,6 @@
 package com.gazorpazorp.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -78,6 +79,8 @@ public class ProductService {
 	}
 	
 	public List<Product> getLCBOProductsById(String productIds) {
-		return Arrays.asList(productIds.split(",")).stream().map(id -> lcboClient.getProductById(Long.parseLong(id)).getResult()).collect(Collectors.toList()).stream().collect(Collectors.toList());
+		if (!productIds.isEmpty())
+			return Arrays.asList(productIds.split(",")).stream().map(id -> lcboClient.getProductById(Long.parseLong(id)).getResult()).collect(Collectors.toList()).stream().collect(Collectors.toList());
+		return new ArrayList<Product>();
 	}
 }

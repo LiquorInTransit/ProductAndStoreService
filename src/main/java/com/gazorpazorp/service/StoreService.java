@@ -1,5 +1,7 @@
 package com.gazorpazorp.service;
 
+import java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,13 +26,13 @@ public class StoreService {
 	StoreRepository storeRepo;
 	
 	public Store locateClosestStoreToCoords(double latitude, double longitude) {
-		Store store = new Store();//lcboClient.getStoresNearPoints(latitude, longitude).getResult().get(0);
-		store.setCity("Cambridge");
-		store.setAddress("120 Cedar St.");
-		store.setId(new Long(382));
-		store.setLatitude(43.3526762);
-		store.setLongitude(-80.3319758);
-		store.setPostalCode("N1S1W4");
+		Store store = /*new Store();*/lcboClient.getStoresNearPoints(latitude, longitude).getResult().get(0);
+//		store.setCity("Cambridge");
+//		store.setAddress("120 Cedar St.");
+//		store.setId(new Long(382));
+//		store.setLatitude(43.3526762);
+//		store.setLongitude(-80.3319758);
+//		store.setPostalCode("N1S1W4");
 		if (store!=null)
 			store.Incorporate();
 		logger.warn("STORE_ID" + store.getId());
@@ -44,7 +46,9 @@ public class StoreService {
 	}
 	
 	public List<Store> getStoresById(String storeIds) {
-		return storeRepo.findAllById(Arrays.asList(storeIds.split(",")).stream().map(Long::parseLong).collect(Collectors.toList()));
+		if (!storeIds.isEmpty())
+			return storeRepo.findAllById(Arrays.asList(storeIds.split(",")).stream().map(Long::parseLong).collect(Collectors.toList()));
+		return new ArrayList<Store>();
 //		return Arrays.asList(storeIds.split(",")).stream().map(id -> getStoreById(Long.parseLong(id))).collect(Collectors.toList());
 	}
 	
