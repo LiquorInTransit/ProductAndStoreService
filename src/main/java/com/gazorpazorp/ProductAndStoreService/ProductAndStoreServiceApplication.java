@@ -48,16 +48,16 @@ public class ProductAndStoreServiceApplication {
 		PRCService.start();
 	}
 	
-	@Scheduled(cron = "0 0 2 * * *")
-	public void updateRepo() {
-		try {
-			PRUService.wait(new Long(5000));
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		PRUService.start();
-	}
+//	@Scheduled(cron = "0 0 2 * * *")
+//	public void updateRepo() {
+//		try {
+//			PRUService.wait(new Long(5000));
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		PRUService.start();
+//	}
 	
 //	@PostConstruct
 //	public void getDbManager(){
