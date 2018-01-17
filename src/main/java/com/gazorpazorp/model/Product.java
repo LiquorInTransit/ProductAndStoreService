@@ -127,7 +127,7 @@ public class Product {
 	}
 
 	public Long getPriceInCents() {
-		return priceInCents;
+		return (long) (priceInCents*1.029);
 	}
 
 	public void setPriceInCents(Long priceInCents) {
