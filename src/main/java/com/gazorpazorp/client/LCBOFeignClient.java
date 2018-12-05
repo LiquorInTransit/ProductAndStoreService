@@ -11,7 +11,7 @@ import com.gazorpazorp.model.StoreResult;
 
 import feign.Headers;
 
-@FeignClient(name="lcbo-client"/*, url="${lcbo-client.url}"*/) //Name can be custom name defined in bootstrap.yml, or the name of a service registered with eureka
+@FeignClient(name="lcbo-client") //Name can be custom name defined in bootstrap.yml, or the name of a service registered with eureka
 public interface LCBOFeignClient {
 	
 	@GetMapping(value="/products/{id}", consumes = "application/json")
